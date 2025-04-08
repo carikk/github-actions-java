@@ -8,11 +8,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Decode kubeconfig
         run: echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 -d > kubeconfig.yaml
 
-      - name: Set kubeconfig
-        run: export KUBECONFIG=$PWD/kubeconfig.yaml
+      - name: Set KUBECONFIG env variable
+        run: echo "KUBECONFIG=$PWD/kubeconfig.yaml" >> $GITHUB_ENV
+
+      - name: Vérification du fichier deployment.yaml
+        run: |
+          echo "Répertoire courant :"
+          pwd
+
+          echo "Contenu du dossier k8s :"
+          ls -l k8s/
+
+          echo "Recherche du fichier deployment.yaml :"
+          find . -name "deployment.yaml"
 
       - name: Deploy to cluster
         run: |
