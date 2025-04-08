@@ -1,9 +1,6 @@
 name: Build JAR on release
 
-on:
-  push:
-    branches:
-      - master
+on: [push]
 
 jobs:
   package:
