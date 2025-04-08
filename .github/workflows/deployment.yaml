@@ -1,0 +1,20 @@
+name: Deploy to Kubernetes
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Decode kubeconfig
+        run: echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 -d > kubeconfig.yaml
+
+      - name: Set kubeconfig
+        run: export KUBECONFIG=$PWD/kubeconfig.yaml
+
+      - name: Deploy to cluster
+        run: |
+          kubectl apply -f k8s/deployment.yaml
+          kubectl rollout status deployment/my-app
