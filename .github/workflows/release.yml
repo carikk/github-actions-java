@@ -17,6 +17,11 @@ jobs:
 
       - name: Build JAR
         run: mvn clean package
+        
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: target/*.jar
 
       - name: Upload JAR as artifact
         uses: actions/upload-artifact@v4
